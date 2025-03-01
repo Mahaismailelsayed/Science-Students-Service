@@ -17,7 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: AppColors.whiteColor,
       body: Stack(
         children: [
-          // Bottom Section (Dark Blue)
           Positioned(
             bottom: 0,
             left: 0,
@@ -27,8 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: BoxDecoration(
                 color: AppColors.primaryColor, // Dark Blue color
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
               ),
             ),
@@ -41,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Row(
               children: [
                 // University Logo
-                Image.asset("assets/images/logo.jpg", height: 80), // Replace with your logo
+                Image.asset("assets/images/logo.png", height: 80), // Replace with your logo
 
                 // University Name
                 Column(
@@ -142,12 +141,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: AppColors.lightGrayColor, width: 2.0),
-                        borderRadius: BorderRadius.circular(50),
-// Border color when focused
+                        borderRadius: BorderRadius.circular(50), // Border color when focused
                       ),
                       prefixIcon: Icon(Icons.lock,color: AppColors.primaryColor,),
                       hintText: "Password",
-
                       suffixIcon: Icon(Icons.visibility,color: AppColors.primaryColor,),
                     ),
                   ),
@@ -198,21 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             )
           ),
-
           // Social Media Icons (At the Bottom)
-          Positioned(
-            bottom: 10,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.facebook, size: 30, color: Colors.white),
-                SizedBox(width: 100),
-                Icon(Icons.play_circle_fill, size: 30, color: Colors.white),
-              ],
-            ),
-          ),
         ],
       ),
     );
