@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: LoginScreen.RouteName,
+      initialRoute: GlobalPassword.RouteName,
       routes: {
         LoginScreen.RouteName : (context)=>LoginScreen(),
         GpaScreen.RouteName : (context)=>GpaScreen(),

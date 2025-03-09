@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gradproject/auth/forget_password/forget_password_screen.dart';
-import 'package:gradproject/auth/register/register_screen.dart';
+import 'package:gradproject/auth/login/login_screen.dart';
+import 'package:gradproject/controllers/cubit/auth_cubit.dart';
 import 'package:gradproject/core/app_colors.dart';
-import 'package:gradproject/home_screen.dart';
-import '../../controllers/cubit/auth_cubit.dart';
 
-class LoginScreen extends StatefulWidget {
-  static const String RouteName = 'login_screen';
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class ForgetPasswordScreen extends StatelessWidget {
   final userNameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmNewPasswordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -24,13 +17,13 @@ class _LoginScreenState extends State<LoginScreen> {
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is LoginSuccessState) {
-            print("✅ Login Success");
-            Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) =>HomeScreen()),
+          if (state is ForgetSuccessState) {
+            print("Navigating to LoginScreen");
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
             );
-          } else if (state is FailedToLoginState) {
-            print("❌ Login Failed ${state.message}");
+          } else if (state is FailedToForgetState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
@@ -38,9 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: AppColors.whiteColor,
-            body: Stack(
-              children: [
+              backgroundColor: AppColors.whiteColor,
+              body: Stack(children: [
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -94,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // نموذج تسجيل الدخول
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.36,
+                  bottom: MediaQuery.of(context).size.height * 0.23,
                   left: 20,
                   right: 20,
                   child: Container(
@@ -114,88 +106,141 @@ class _LoginScreenState extends State<LoginScreen> {
                       key: formKey,
                       child: Column(
                         children: [
-                          Text(
-                            "Login",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          Container(
-                            height: 2.5,
-                            color: AppColors.primaryColor,
-                            width: 55,
-                          ),
-                          SizedBox(height: 18),
-
                           // إدخال اسم المستخدم
                           TextFormField(
                             controller: userNameController,
                             cursorColor: AppColors.lightGrayColor,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.lightGrayColor, width: 2.0),
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.lightGrayColor, width: 2.0),
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              prefixIcon: Icon(Icons.person, color: AppColors.primaryColor),
                               hintText: "Username",
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "الرجاء إدخال اسم المستخدم";
+                                return "Enter The User Name";
                               }
                               return null;
                             },
                           ),
                           SizedBox(height: 10),
-
-                          // إدخال كلمة المرور
                           TextFormField(
-                            controller: passwordController,
+                            controller: emailController,
                             cursorColor: AppColors.lightGrayColor,
-                            obscureText: true,
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.lightGrayColor, width: 2.0),
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: AppColors.lightGrayColor, width: 2.0),
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              prefixIcon: Icon(Icons.lock, color: AppColors.primaryColor),
-                              hintText: "Password",
-                              suffixIcon: Icon(Icons.visibility, color: AppColors.primaryColor),
+                              hintText: "Email",
                             ),
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
-                                return "الرجاء إدخال كلمة المرور";
+                                return "Enter The Email";
                               }
                               return null;
                             },
                           ),
-                          SizedBox(height: 25,)
+                          SizedBox(
+                            height: 10,
+                          ),
+                          // إدخال كلمة المرور
+                          TextFormField(
+                            controller: newPasswordController,
+                            cursorColor: AppColors.lightGrayColor,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              hintText: "New Password",
+                              suffixIcon: Icon(Icons.visibility,
+                                  color: AppColors.primaryColor),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Enter the New Password";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            controller: confirmNewPasswordController,
+                            cursorColor: AppColors.lightGrayColor,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: AppColors.lightGrayColor,
+                                    width: 2.0),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              hintText: "Confirm New Password",
+                              suffixIcon: Icon(Icons.visibility,
+                                  color: AppColors.primaryColor),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return "Enter the  Confirm New Password";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 25,
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
-
                 // زر تسجيل الدخول
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height * 0.32,
+                  bottom: MediaQuery.of(context).size.height * 0.19,
                   left: MediaQuery.of(context).size.width * 0.4,
                   child: InkWell(
                     onTap: () {
-                      if (formKey.currentState?.validate() ?? false) {
-                        BlocProvider.of<AuthCubit>(context).Login(
+                      if (formKey.currentState!.validate()) {
+                        BlocProvider.of<AuthCubit>(context).ForgetPassword(
                           userName: userNameController.text.trim(),
-                          password: passwordController.text.trim(),
+                          email: emailController.text.trim(),
+                          newPassword: newPasswordController.text.trim(),
+                          confirmNewPassword: confirmNewPasswordController.text.trim(),
                         );
                       }
                     },
@@ -206,29 +251,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
-                          colors: [AppColors.primaryColor, AppColors.lightGreenColor],
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.lightGreenColor
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                       ),
                       child: Center(
-                        child: Icon(Icons.arrow_forward, size: 30, color: Colors.white),
+                        child: Icon(Icons.arrow_forward,
+                            size: 30, color: Colors.white),
                       ),
                     ),
                   ),
                 ),
-                Positioned(
-                    bottom: MediaQuery.of(context).size.height * 0.28,
-                    left: MediaQuery.of(context).size.height * 0.04,
-                    child: InkWell(
-                        onTap: (){
-                          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>  ForgetPasswordScreen()));
-                        },
-                        child: Text('Forget Password',style: TextStyle(color: AppColors.whiteColor,fontSize: 18),))
-                ),
-              ],
-            ),
-          );
+              ]));
         },
       ),
     );
